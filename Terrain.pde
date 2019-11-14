@@ -9,8 +9,8 @@ public class Terrain {
   float flyingSpeed = 0.005;
   
   public Terrain(int w, int h) {
-    cols = w * 2 / scl;
-    rows = h * 2 / scl;
+    cols = w / scl;
+    rows = h / scl;
     terrain = new float[cols][rows];
   }
   
