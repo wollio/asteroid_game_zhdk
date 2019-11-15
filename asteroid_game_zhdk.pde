@@ -35,15 +35,16 @@ public void setup() {
   leap = new LeapMotion(this);
   og = new ObjectGenerator3D();
   terrain = new Terrain(new PVector(0,0,-200), (int) widthTerrain, (int) heightTerrain);
-  spaceship = new Spaceship(new PVector(0, -500, 0), 200);
+  spaceship = new Spaceship(new PVector(0, 800, 0), 200);
 }
 
 public void draw() {
   
-  if (random(-10, 1) > 0) {
-    int x = (int) random(0, 2000);
-    int y = (int) random(100, 300);
-    asteroids.add(new Asteroid(new PVector(x, y, 500), new PVector(random(-1, 1), random(2,20), -5), (int) random(10,30)));
+  if (random(-1, 1) > 0) {
+    int x = (int) random(widthTerrain / 2 - 500, widthTerrain / 2 + 500);
+    int z = (int) random(-100, 200);
+    spaceship.shoot();
+    asteroids.add(new Asteroid(new PVector(x, 0, z), new PVector(random(-3, 3), random(20,100), 0), (int) random(10,30)));
   }
   
   if (leap.hasHands()) {
@@ -52,22 +53,24 @@ public void draw() {
     positionSpaceShip.z = h.getPosition().z;
     println(mouseX);
   } else {
-    positionSpaceShip.x = map(mouseX, 0, width, 0, widthTerrain);
-    positionSpaceShip.z = map(mouseY, 0, height, height, -200);
+    spaceship.position.x = map(mouseX, 0, width, 0, widthTerrain);
+    spaceship.position.z = map(mouseY, 0, height, 400, -200);
   }
   
   background(230,70,50);
   
   rotateX(PI/2-0.3);
+  rotateX(radians(map(mouseY, 0, height, -5, 5)));
+  rotateY(radians(map(mouseX, 0, width, -5, 5)));
   
   translate(-width, -heightTerrain+150);
   
   terrain.render();
-  spaceship.render(positionSpaceShip);
+  spaceship.render();
   
   for(int i = 0; i < asteroids.size(); i++) {
     asteroids.get(i).render();
-    if (asteroids.get(i).position.z < -200) {
+    if (asteroids.get(i).position.y > heightTerrain + 200) {
       asteroids.remove(asteroids.get(i));
     }
   }
@@ -75,4 +78,8 @@ public void draw() {
   if (asteroids.size() > 100) {
     asteroids.remove(0);
   }
+}
+
+void mouseClicked() {
+  spaceship.shoot();
 }

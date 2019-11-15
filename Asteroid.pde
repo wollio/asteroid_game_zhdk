@@ -22,11 +22,13 @@ public class Asteroid {
   public void render() {
     push();
     translate(this.position.x, this.position.y, this.position.z);
+    fill(120,100,100);
     sphereDetail(8);
-    this.particles.addParticle();
+    //this.particles.addParticle();
     //this.particles.run();
     sphere(size);
     this.updateState();
+    noFill();
     pop();
   }
   
