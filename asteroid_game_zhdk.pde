@@ -10,10 +10,13 @@ float heightTerrain;
 Terrain terrain;
 Spaceship spaceship;
 ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
+private ArrayList<Projectile> projectiles = new ArrayList();
 
 ObjectGenerator3D og;
 
 //gameengine --> logic and render function.
+//lerp
+//millis for animations.
 
 private PVector positionSpaceShip = new PVector(width, 0, 200);
 
@@ -43,7 +46,6 @@ public void draw() {
   if (random(-1, 1) > 0) {
     int x = (int) random(widthTerrain / 2 - 500, widthTerrain / 2 + 500);
     int z = (int) random(-100, 200);
-    spaceship.shoot();
     asteroids.add(new Asteroid(new PVector(x, 0, z), new PVector(random(-3, 3), random(20,100), 0), (int) random(10,30)));
   }
   
@@ -75,11 +77,15 @@ public void draw() {
     }
   }
   
+  for (int i = 0; i < this.projectiles.size(); i++) {
+    this.projectiles.get(i).render();
+  }
+  
   if (asteroids.size() > 100) {
     asteroids.remove(0);
   }
 }
 
 void mouseClicked() {
-  spaceship.shoot();
+  this.projectiles.add(new Projectile(this.spaceship.position.copy(), new PVector(0, -60, 0)));
 }

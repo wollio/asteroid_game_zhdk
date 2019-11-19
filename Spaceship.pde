@@ -3,7 +3,6 @@ public class Spaceship {
   private ObjectGenerator3D og;
   private PVector position;
   private int size;
-  private ArrayList<Projectile> projectiles = new ArrayList();
   
   public Spaceship(PVector position, int size) {
     this.position = position;
@@ -26,15 +25,8 @@ public class Spaceship {
         
         pop();
     pop();
-    for (int i = 0; i < this.projectiles.size(); i++) {
-      this.projectiles.get(i).render();
-    }
     noFill();
     pop();
-  }
-  
-  public void shoot() {
-    this.projectiles.add(new Projectile(new PVector(0,0,0), new PVector(0, 30, 0)));
   }
   
 }

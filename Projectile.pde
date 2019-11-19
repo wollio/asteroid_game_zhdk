@@ -12,12 +12,9 @@ class Projectile {
   public void render() {
     push();
     translate(this.position.x, this.position.y, this.position.z);
-    /*beginShape();
-    vertex(this.position.x, this.position.y, this.position.z);
+    stroke(50, 100, 100);
+    sphere(6);
     this.position.add(this.velocity);
-    vertex(this.position.x, this.position.y, this.position.z);
-    endShape();*/
-    sphere(30);
     pop();
   }
   
