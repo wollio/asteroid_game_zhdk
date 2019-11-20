@@ -21,7 +21,9 @@ ObjectGenerator3D og;
 private PVector positionSpaceShip = new PVector(width, 0, 200);
 
 public void setup() {
+  
   fullScreen(P3D);
+  //fullScreen(P3D);
   pixelDensity(2);
   colorMode(HSB, 360, 100, 100);
   cam = new PeasyCam(this, 400);
@@ -38,7 +40,7 @@ public void setup() {
   leap = new LeapMotion(this);
   og = new ObjectGenerator3D();
   terrain = new Terrain(new PVector(0,0,-200), (int) widthTerrain, (int) heightTerrain);
-  spaceship = new Spaceship(new PVector(0, 800, 0), 200);
+  spaceship = new Spaceship(new PVector(0, 1200, 0), 200);
 }
 
 public void draw() {
@@ -46,7 +48,7 @@ public void draw() {
   if (random(-1, 1) > 0) {
     int x = (int) random(widthTerrain / 2 - 500, widthTerrain / 2 + 500);
     int z = (int) random(-100, 200);
-    asteroids.add(new Asteroid(new PVector(x, 0, z), new PVector(random(-3, 3), random(20,100), 0), (int) random(10,30)));
+    asteroids.add(new Asteroid(new PVector(x, -300, z), new PVector(random(-3, 3), random(20,100), 0), (int) random(10,50)));
   }
   
   if (leap.hasHands()) {
@@ -67,6 +69,7 @@ public void draw() {
   
   translate(-width, -heightTerrain+150);
   
+  lights();
   terrain.render();
   spaceship.render();
   
