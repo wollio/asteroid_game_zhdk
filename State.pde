@@ -7,6 +7,7 @@ abstract class State {
     this.name = name;
     this.context = context;
     this.context.registerMethod("mouseEvent", this);
+    this.setup();
   }
   
   abstract public void setup();

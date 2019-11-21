@@ -1,7 +1,7 @@
 public class Terrain {
   
-  int cols = 10;
-  int rows = 10;
+  int cols = 5;
+  int rows = 5;
   int scl = 15;
   
   float[][] terrain;

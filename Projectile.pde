@@ -1,20 +1,30 @@
-class Projectile {
+class Projectile extends Element {
   
-  private PVector position;
-  private PVector velocity;
-  
+  ObjectGenerator3D og;
+  color colour = color(50, 100, 100);
+  public int projectileHeight = 5;
+  public int projectileWidth = 5;
+  public int projectileLenght = 300;
   
   public Projectile(PVector position, PVector velocity) {
-    this.position = position;
-    this.velocity = velocity;
+    super(position, velocity);
+    this.og = new ObjectGenerator3D();
+  }
+  
+  protected void updateState() {
+    if (this.position.y <= -1000) {
+      this.delete = true;
+    }
+    this.position.add(this.velocity);  
   }
   
   public void render() {
     push();
     translate(this.position.x, this.position.y, this.position.z);
-    stroke(50, 100, 100);
-    sphere(6);
-    this.position.add(this.velocity);
+    stroke(colour);
+    box(projectileWidth, projectileLenght, projectileHeight);
+    og.compass();
+    this.updateState();
     pop();
   }
   

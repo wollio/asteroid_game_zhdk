@@ -1,15 +1,20 @@
-public class Spaceship {
+public class Spaceship extends Element {
  
-  private ObjectGenerator3D og;
-  private PVector position;
-  private int size;
   private PShape object;
   
-  public Spaceship(PVector position, int size) {
-    this.position = position;
-    this.size = size;
-    this.og = new ObjectGenerator3D();
+  public Spaceship(PVector position) {
+    super(position, null);
     this.object = loadShape("ufo.obj");
+  }
+  
+  protected void updateState() {
+  
+  }
+  
+  public void updatePosition(float x, float y, float z) {
+    this.position.x = x;
+    this.position.y = y;
+    this.position.z = z;
   }
   
   public void render() {
