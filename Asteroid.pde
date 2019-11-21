@@ -25,8 +25,7 @@ public class Asteroid extends Element {
     //this.sphere.setStroke(false);
     
     //from rock
-    this.radius = random(10, 30);
-    this.size = this.radius;
+    this.radius = size;
     this.rough  = random(0.3, 1);
     this.detail = 30;
     this.spin   = new PVector(random(-PI, PI), random(-PI, PI), 0);
@@ -104,7 +103,7 @@ public class Asteroid extends Element {
   {
     push();
     translate(this.position.x, this.position.y, this.position.z);
-    shape(this.sphere);
+    //shape(this.sphere);
     //og.compass();
     if(rebuild) { noLoop(); initPoints(); loop(); rebuild = false; }
     noStroke();

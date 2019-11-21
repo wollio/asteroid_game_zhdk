@@ -20,6 +20,7 @@ public class Spaceship extends Element {
   public void render() {
     push();
     translate(position.x, position.y, position.z);
+    box(70, 70, 15);
     rotateX(PI/2);
     lights();
     scale(0.1);

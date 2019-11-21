@@ -45,7 +45,7 @@ public class GameState extends State {
       
     }*/
     
-    background(230,70,50);
+    background(230,70,10);
     
     rotateX(PI/2-0.3);
     rotateX(radians(map(mouseY, 0, height, -5, 5)));

@@ -1,6 +1,10 @@
 import peasy.PeasyCam;
 import de.voidplus.leapmotion.*;
+import ch.bildspur.postfx.builder.*;
+import ch.bildspur.postfx.pass.*;
+import ch.bildspur.postfx.*;
 
+PostFX fx;
 PeasyCam cam;
 LeapMotion leap;
 
@@ -12,8 +16,6 @@ ObjectGenerator3D og;
 //gameengine --> logic and render function.
 //lerp
 //millis for animations.
-
-private PVector positionSpaceShip = new PVector(width, 0, 200);
 
 public void setup() {
   
@@ -29,6 +31,8 @@ public void setup() {
   cam.setCenterDragHandler(null);
   
   this.states.put("game", new GameState(this));
+  
+  fx = new PostFX(this);  
   
   stroke(255);
   noFill();
