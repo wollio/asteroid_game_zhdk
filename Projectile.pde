@@ -18,6 +18,12 @@ class Projectile {
     pop();
   }
   
+  public PVector getPosition() {
+    return this.position;
+  }
   
+  public float getSize() {
+    return 6;
+  }
 
 }

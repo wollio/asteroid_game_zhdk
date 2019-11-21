@@ -40,4 +40,11 @@ public class Asteroid {
     pop();
   }
   
+  public PVector getPosition() {
+    return this.position;
+  }
+  
+  public float getSize() {
+    return this.size;
+  }
 }
