@@ -1,6 +1,7 @@
 public abstract class Element {
   protected PVector position;
   protected PVector velocity;
+  protected PShape shape;
   public boolean delete;
   
   public Element(PVector pos, PVector velo) {
@@ -19,5 +20,9 @@ public abstract class Element {
   
   public PVector getVelocity() {
     return this.velocity;
+  }
+  
+  public PShape getShape() {
+    return this.shape;
   }
 }

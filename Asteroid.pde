@@ -5,7 +5,6 @@ public class Asteroid extends Element {
   private color strokeColor;
   private boolean isExploding;
   private ParticleSystem particles;
-  private PShape sphere;
   
   //from rock
   private float[][][] points;
@@ -20,8 +19,8 @@ public class Asteroid extends Element {
     this.size = size;
     this.strokeColor = color(0, 100, 0);
     this.particles = new ParticleSystem(this.position);
-    this.sphere = createShape(SPHERE, size);
-    this.sphere.setFill(false);
+    this.shape = createShape(SPHERE, size);
+    //this.shape.setFill(false);
     //this.sphere.setStroke(false);
     
     //from rock
@@ -47,11 +46,11 @@ public class Asteroid extends Element {
     translate(this.position.x, this.position.y, this.position.z);
     sphereDetail(12);
     //
-    this.sphere.setFill(false);
-    this.sphere.setStroke(false);
+    this.shape.setFill(false);
+    this.shape.setStroke(true);
     //this.particles.addParticle();
     //this.particles.run();
-    shape(this.sphere);
+    shape(this.shape);
     this.updateState();
     noFill();
     pop();
@@ -103,7 +102,7 @@ public class Asteroid extends Element {
   {
     push();
     translate(this.position.x, this.position.y, this.position.z);
-    //shape(this.sphere);
+    shape(this.shape);
     //og.compass();
     if(rebuild) { noLoop(); initPoints(); loop(); rebuild = false; }
     noStroke();

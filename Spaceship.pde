@@ -5,6 +5,7 @@ public class Spaceship extends Element {
   public Spaceship(PVector position) {
     super(position, null);
     this.object = loadShape("ufo.obj");
+    this.shape = createShape(BOX, 70, 70, 15);
   }
   
   protected void updateState() {
@@ -20,7 +21,7 @@ public class Spaceship extends Element {
   public void render() {
     push();
     translate(position.x, position.y, position.z);
-    box(70, 70, 15);
+    shape(this.shape);
     rotateX(PI/2);
     lights();
     scale(0.1);

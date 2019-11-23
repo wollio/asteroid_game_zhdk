@@ -1,12 +1,22 @@
-abstract class State {
+public abstract class State {
   
   private String name;
   private PApplet context;
+  private StateSingleton currentState;
+  private Star[] stars;
+  
   
   public State(String name, PApplet context) {
     this.name = name;
     this.context = context;
     this.context.registerMethod("mouseEvent", this);
+    this.currentState = StateSingleton.getInstance(context);
+    
+    this.stars = new Star[500];
+    for (int i = 0; i < this.stars.length; i++) {
+      this.stars[i] = new Star();
+    }
+    
     this.setup();
   }
   
@@ -15,6 +25,35 @@ abstract class State {
   abstract void draw();
   
   abstract void mouseEvent(MouseEvent event);
+  
+  protected void drawBackground() {
+    cam.beginHUD();
+    translate(0, -200);
+      background(0);
+  
+      // I shift the entire composition,
+      // moving its center from the top left corner to the center of the canvas.
+      translate(width/2, height/2);
+      // I draw each star, running the "update" method to update its position and
+      // the "show" method to show it on the canvas.
+      for (int i = 0; i < stars.length; i++) {
+        stars[i].update();
+        stars[i].show();
+      }
+    cam.endHUD();
+  }
+  
+  protected void setCurrentState(String state) {
+    this.currentState.state = state;
+  }
+  
+  protected String getCurrentState() {
+    return this.currentState.state;
+  }
+  
+  protected boolean isActive() {
+    return this.name.equals(getCurrentState());
+  }
   
   public String getName() {
     return this.name;

@@ -1,17 +1,21 @@
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
+
 import peasy.PeasyCam;
 import de.voidplus.leapmotion.*;
-import ch.bildspur.postfx.builder.*;
-import ch.bildspur.postfx.pass.*;
-import ch.bildspur.postfx.*;
 
-PostFX fx;
 PeasyCam cam;
 LeapMotion leap;
 
 HashMap<String, State> states = new HashMap<String, State>();
-String activeState = "game";
+String activeState = "start";
 
 ObjectGenerator3D og;
+Minim minim;
 
 //gameengine --> logic and render function.
 //lerp
@@ -22,17 +26,17 @@ public void setup() {
   //size(1200, 600, P3D);
   fullScreen(P3D);
   frameRate(25);
-  //pixelDensity(2);
+  pixelDensity(2);
   colorMode(HSB, 360, 100, 100);
   cam = new PeasyCam(this, 400);
+  minim = new Minim (this);
   
   cam.setLeftDragHandler(null);
   cam.setRightDragHandler(null);
   cam.setCenterDragHandler(null);
   
-  this.states.put("game", new GameState(this));
-  
-  fx = new PostFX(this);  
+  this.states.put("game", new GameState(this, minim));
+  this.states.put("start", new StartState(this));
   
   stroke(255);
   noFill();
@@ -42,7 +46,7 @@ public void setup() {
 }
 
 public void draw() {
-  this.states.get(this.activeState).draw();
+  this.states.get(((State) this.states.values().toArray()[0]).getCurrentState()).draw();
   
   cam.beginHUD();
   fill(255);

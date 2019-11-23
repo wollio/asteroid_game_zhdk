@@ -5,14 +5,17 @@ public class GameState extends State {
   
   Terrain terrain;
   Spaceship spaceship;
+  AudioPlayer player;
+  
   private ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
   private ArrayList<Projectile> projectiles = new ArrayList();
   
-  public GameState(PApplet context) {
+  public GameState(PApplet context, Minim minim) {
     super("game", context);
     
     widthTerrain = width * 2;
     heightTerrain = height * 1.3;
+    player = minim.loadFile("laser.wav");
     
     terrain = new Terrain(new PVector(0,0,-200), (int) widthTerrain, (int) heightTerrain);
     spaceship = new Spaceship(new PVector(0, 1200, 0));
@@ -23,13 +26,14 @@ public class GameState extends State {
   }
   
   void mouseEvent(MouseEvent event) {
-    if (event.getAction() == MouseEvent.CLICK) {
+    if (event.getAction() == MouseEvent.CLICK && this.isActive()) {
+      this.player.loop(0);
       this.projectiles.add(new Projectile(this.spaceship.position.copy(), new PVector(0, -60, 0)));
     }
   }
   
   public void draw() {
-    if (random(-1, 1) > 0) {
+    if (random(-2, 1) > 0) {
       int x = (int) random(widthTerrain / 2 - 500, widthTerrain / 2 + 500);
       int z = (int) random(-100, 200);
       asteroids.add(new Asteroid(new PVector(x, -300, z), new PVector(random(-3, 3), random(20,50), 0), (int) random(10,50)));
@@ -45,7 +49,8 @@ public class GameState extends State {
       
     }*/
     
-    background(230,70,10);
+    drawBackground();
+    //background(230,70,10);
     
     rotateX(PI/2-0.3);
     rotateX(radians(map(mouseY, 0, height, -5, 5)));
@@ -83,35 +88,34 @@ public class GameState extends State {
   private void collisionDetecting() {
     Projectile p;
     Asteroid a;
-    for (int i = 0; i < this.projectiles.size(); i++) {
-      for (int j = 0; j < this.asteroids.size(); j++) {
+    for (int j = 0; j < this.asteroids.size(); j++) {
+      a = this.asteroids.get(j);
+      for (int i = 0; i < this.projectiles.size(); i++) {
         p = this.projectiles.get(i);
-        a = this.asteroids.get(j);
-        if (boxSphereCollision(a, p)) {
+        if (boxSphereCollision(a, p.getShape(), p.position)) {
           p.delete = true;
           a.delete = true;
         }
-      
       }
+      if (boxSphereCollision(a, spaceship.getShape(), spaceship.getPosition())) {
+        setCurrentState("start");
+      }
+      
     }
   }
   
-  private float distancePVector(PVector pv1, PVector pv2) {
-    return dist(pv1.x, pv1.y, pv1.z, pv2.x, pv2.y, pv2.z);
-  }
+  private boolean boxSphereCollision(Asteroid a, PShape s, PVector position) {
+    // get box closest point to sphere center by clamping
+    float x = Math.max(position.x - s.getWidth() / 2, Math.min(a.position.x, position.x + s.getWidth() / 2));
+    float y = Math.max(position.y - s.getHeight() / 2, Math.min(a.position.y, position.y + s.getHeight() / 2));
+    float z = Math.max(position.z - s.getDepth() / 2, Math.min(a.position.z, position.z + s.getDepth() / 2));
   
-  private boolean boxSphereCollision(Asteroid a, Projectile p) {
-  // get box closest point to sphere center by clamping
-  float x = Math.max(p.position.x - p.projectileWidth / 2, Math.min(a.position.x, p.position.x + p.projectileWidth / 2));
-  float y = Math.max(p.position.y - p.projectileLenght / 2, Math.min(a.position.y, p.position.y + p.projectileLenght / 2));
-  float z = Math.max(p.position.z - p.projectileHeight / 2, Math.min(a.position.z, p.position.z + p.projectileHeight / 2));
-
-  // this is the same as isPointInsideSphere
-  double distance = Math.sqrt((x - a.position.x) * (x - a.position.x) +
-                           (y - a.position.y) * (y - a.position.y) +
-                           (z - a.position.z) * (z - a.position.z));
-  
-  return distance < a.size;
+    // this is the same as isPointInsideSphere
+    double distance = Math.sqrt((x - a.position.x) * (x - a.position.x) +
+                             (y - a.position.y) * (y - a.position.y) +
+                             (z - a.position.z) * (z - a.position.z));
+    
+    return distance < a.size;
   }
 
 }
