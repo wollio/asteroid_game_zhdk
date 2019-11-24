@@ -21,12 +21,12 @@ public class Spaceship extends Element {
   public void render() {
     push();
     translate(position.x, position.y, position.z);
-    shape(this.shape);
+    //shape(this.shape);
     rotateX(PI/2);
     lights();
     scale(0.1);
-    /*og.compass();
-    push();
+    og.compass();
+    /*push();
     rotateX(PI/2);
       fill(0, 100, 100);
       og.triangle(size / 3, size / 3, size);

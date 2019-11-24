@@ -102,7 +102,7 @@ public class Asteroid extends Element {
   {
     push();
     translate(this.position.x, this.position.y, this.position.z);
-    shape(this.shape);
+    //shape(this.shape);
     //og.compass();
     if(rebuild) { noLoop(); initPoints(); loop(); rebuild = false; }
     noStroke();

@@ -3,6 +3,8 @@ public class GameState extends State {
   float widthTerrain;
   float heightTerrain;
   
+  float startTime;
+  
   Terrain terrain;
   Spaceship spaceship;
   AudioPlayer player;
@@ -18,11 +20,11 @@ public class GameState extends State {
     player = minim.loadFile("laser.wav");
     
     terrain = new Terrain(new PVector(0,0,-200), (int) widthTerrain, (int) heightTerrain);
-    spaceship = new Spaceship(new PVector(0, 1200, 0));
+    spaceship = new Spaceship(new PVector(0, height*1.2, 0));
   }
 
   public void setup() {
-  
+    this.startTime = millis();
   }
   
   void mouseEvent(MouseEvent event) {
@@ -33,13 +35,15 @@ public class GameState extends State {
   }
   
   public void draw() {
+    og.compass();
     if (random(-2, 1) > 0) {
-      int x = (int) random(widthTerrain / 2 - 500, widthTerrain / 2 + 500);
-      int z = (int) random(-100, 200);
-      asteroids.add(new Asteroid(new PVector(x, -300, z), new PVector(random(-3, 3), random(20,50), 0), (int) random(10,50)));
+      int x = (int) random(this.spaceship.position.x - width/2, this.spaceship.position.x + width/2);
+      int z = (int) random(this.spaceship.position.z - 500, this.spaceship.position.z + 500);
+      asteroids.add(new Asteroid(new PVector(x, -height*2, z), new PVector(random(-3, 3), random(20,50), 0), (int) random(30,80)));
     }
     
-    spaceship.updatePosition(map(mouseX, 0, width, 0, widthTerrain), spaceship.getPosition().y, map(mouseY, 0, height, 400, -200));
+    spaceship.updatePosition(map(mouseX, 0, width, 0, widthTerrain), spaceship.getPosition().y, map(mouseY, 0, height, -height, height));
+    cam.lookAt(map(mouseX, 0, width, -width,width), map(mouseY, 0, height, -height / 2, height / 2), mouseY*0.7, 0);
     /*if (leap.hasHands()) {
       Hand h = leap.getHands().get(0);
       positionSpaceShip.x = h.getPosition().x;
@@ -49,12 +53,12 @@ public class GameState extends State {
       
     }*/
     
-    drawBackground();
+    drawBackground(color(0, 0,0));
     //background(230,70,10);
     
-    rotateX(PI/2-0.3);
-    rotateX(radians(map(mouseY, 0, height, -5, 5)));
-    rotateY(radians(map(mouseX, 0, width, -5, 5)));
+    rotateX(PI/2); //-0.3
+    //rotateX(radians(map(mouseY, 0, height, -5, 5)));
+    //rotateY(radians(map(mouseX, 0, width, -5, 5)));
     
     translate(-width, -heightTerrain+150);
     
@@ -83,6 +87,10 @@ public class GameState extends State {
           this.projectiles.remove(this.projectiles.get(i));
         };
     }
+    
+    cam.beginHUD();
+      text(millis() - startTime, width - 30, 30);
+    cam.endHUD();
   }
   
   private void collisionDetecting() {
@@ -98,6 +106,7 @@ public class GameState extends State {
         }
       }
       if (boxSphereCollision(a, spaceship.getShape(), spaceship.getPosition())) {
+        this.asteroids.clear();
         setCurrentState("start");
       }
       

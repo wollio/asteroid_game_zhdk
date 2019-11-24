@@ -34,6 +34,7 @@ public void setup() {
   cam.setLeftDragHandler(null);
   cam.setRightDragHandler(null);
   cam.setCenterDragHandler(null);
+  //cam.setWheelHandler(null);
   
   this.states.put("game", new GameState(this, minim));
   this.states.put("start", new StartState(this));
@@ -52,4 +53,9 @@ public void draw() {
   fill(255);
   text(frameRate, 50, 50);
   cam.endHUD();
+}
+
+public void stop() {
+  minim.stop();
+  super.stop();
 }

@@ -26,10 +26,10 @@ public abstract class State {
   
   abstract void mouseEvent(MouseEvent event);
   
-  protected void drawBackground() {
+  protected void drawBackground(color c) {
     cam.beginHUD();
     translate(0, -200);
-      background(0);
+      background(c);
   
       // I shift the entire composition,
       // moving its center from the top left corner to the center of the canvas.
@@ -45,6 +45,7 @@ public abstract class State {
   
   protected void setCurrentState(String state) {
     this.currentState.state = state;
+    this.setup();
   }
   
   protected String getCurrentState() {

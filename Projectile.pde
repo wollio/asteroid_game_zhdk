@@ -1,14 +1,16 @@
 class Projectile extends Element {
   
   ObjectGenerator3D og;
-  color colour = color(50, 100, 100);
+  color colour;
   
   public Projectile(PVector position, PVector velocity) {
     super(position, velocity);
     this.og = new ObjectGenerator3D();
-    this.shape = createShape(BOX, 1, 100, 1);
+    this.colour = color(50, 100, 100);
+    stroke(this.colour);
+    this.shape = createShape(BOX, 4, 100, 4);
     
-    println(this.shape.getWidth(), this.shape.getHeight(), this.shape.getDepth());
+    //println(this.shape.getWidth(), this.shape.getHeight(), this.shape.getDepth());
   }
   
   protected void updateState() {
@@ -21,7 +23,6 @@ class Projectile extends Element {
   public void render() {
     push();
     translate(this.position.x, this.position.y, this.position.z);
-    stroke(colour);
     //filter( BLUR, 6 );
     shape(this.shape);
     //filter(null);
