@@ -12,7 +12,6 @@ PeasyCam cam;
 LeapMotion leap;
 
 HashMap<String, State> states = new HashMap<String, State>();
-String activeState = "start";
 
 ObjectGenerator3D og;
 Minim minim;
@@ -34,10 +33,11 @@ public void setup() {
   cam.setLeftDragHandler(null);
   cam.setRightDragHandler(null);
   cam.setCenterDragHandler(null);
-  //cam.setWheelHandler(null);
+  cam.setWheelHandler(null);
   
   this.states.put("game", new GameState(this, minim));
   this.states.put("start", new StartState(this));
+  this.states.put("end", new EndState(this));
   
   stroke(255);
   noFill();

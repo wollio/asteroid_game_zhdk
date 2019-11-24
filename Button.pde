@@ -4,7 +4,7 @@ class Button {
   int h;
   int w;
   String text;
-  color bgColor = color(25, 100, 100);
+  color bgColor = color(25, 100, 100, 0);
   color textColor = color(244, 100, 100);
   
   public Button(PVector position, int w, int h, String text) {

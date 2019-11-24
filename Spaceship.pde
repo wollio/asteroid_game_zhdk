@@ -1,6 +1,10 @@
 public class Spaceship extends Element {
  
   private PShape object;
+  public float tiltY = 0;
+  public float tiltX = 0;
+  
+  ArrayList<PShape> warpRings = new ArrayList<PShape>();
   
   public Spaceship(PVector position) {
     super(position, null);
@@ -12,20 +16,20 @@ public class Spaceship extends Element {
   
   }
   
-  public void updatePosition(float x, float y, float z) {
-    this.position.x = x;
-    this.position.y = y;
-    this.position.z = z;
+  public void updatePosition(PVector direction) {
+    this.position.add(direction);
   }
   
   public void render() {
     push();
     translate(position.x, position.y, position.z);
+    warpRings.add(new PShape());
     //shape(this.shape);
-    rotateX(PI/2);
+    rotateY(radians(tiltY));
+    rotateX(PI/2+radians(tiltX));
     lights();
     scale(0.1);
-    og.compass();
+    this.object.rotateY(0.1);
     /*push();
     rotateX(PI/2);
       fill(0, 100, 100);

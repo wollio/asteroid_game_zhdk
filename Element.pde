@@ -7,6 +7,9 @@ public abstract class Element {
   public Element(PVector pos, PVector velo) {
     this.position = pos;
     this.velocity = velo;
+    if (this.velocity != null) {
+      this.velocity.limit(100);
+    }
     this.delete = false;
   }
   

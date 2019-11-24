@@ -8,7 +8,8 @@ class Projectile extends Element {
     this.og = new ObjectGenerator3D();
     this.colour = color(50, 100, 100);
     stroke(this.colour);
-    this.shape = createShape(BOX, 4, 100, 4);
+    fill(this.colour);
+    this.shape = createShape(BOX, 2, 100, 2);
     
     //println(this.shape.getWidth(), this.shape.getHeight(), this.shape.getDepth());
   }

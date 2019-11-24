@@ -44,16 +44,29 @@ public class Asteroid extends Element {
   public void render() {
     push();
     translate(this.position.x, this.position.y, this.position.z);
-    sphereDetail(12);
-    //
-    this.shape.setFill(false);
-    this.shape.setStroke(true);
-    //this.particles.addParticle();
-    //this.particles.run();
-    shape(this.shape);
-    this.updateState();
-    noFill();
+    //shape(this.shape);
+    //og.compass();
+    if(rebuild) { noLoop(); initPoints(); loop(); rebuild = false; }
+    noStroke();
+    rotateX(spin.x);
+    rotateY(spin.y);
+    rotateZ(spin.z += speed);
+    for(int i = 0; i < points.length; i++)
+    {
+      float[][] pointSet = points[i];
+      if(pointSet == null) continue;
+      beginShape(TRIANGLE_STRIP);
+      texture(skin);
+      for(int j = 0; j < pointSet.length; j++)
+      {
+        float[] p = pointSet[j];
+        vertex(p[0], p[1], p[2], p[3] * (skin.width - 1), p[4] * (skin.height - 1));
+      }
+      endShape();
+      
+    }
     pop();
+    this.updateState();
   }
   
   public float getSize() {
@@ -96,34 +109,5 @@ public class Asteroid extends Element {
     PVector p = new PVector(cos(v) * cos(u), cos(v) * sin(u), sin(v));
     float r = radius * ((1 - rough) + rough * 2 * noise(p.x + p.y, p.y + p.z, p.z + p.x));
     return new float[] { p.x * r, p.y * r, p.z * r, u / TWO_PI, (v + HALF_PI) / PI };
-  }
-
-  public void draw()
-  {
-    push();
-    translate(this.position.x, this.position.y, this.position.z);
-    //shape(this.shape);
-    //og.compass();
-    if(rebuild) { noLoop(); initPoints(); loop(); rebuild = false; }
-    noStroke();
-    rotateX(spin.x);
-    rotateY(spin.y);
-    rotateZ(spin.z += speed);
-    for(int i = 0; i < points.length; i++)
-    {
-      float[][] pointSet = points[i];
-      if(pointSet == null) continue;
-      beginShape(TRIANGLE_STRIP);
-      texture(skin);
-      for(int j = 0; j < pointSet.length; j++)
-      {
-        float[] p = pointSet[j];
-        vertex(p[0], p[1], p[2], p[3] * (skin.width - 1), p[4] * (skin.height - 1));
-      }
-      endShape();
-      
-    }
-    pop();
-    this.updateState();
   }
 }

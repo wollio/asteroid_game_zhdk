@@ -5,21 +5,18 @@ public class GameState extends State {
   
   float startTime;
   
-  Terrain terrain;
+  PVector spaceshipDirection;
   Spaceship spaceship;
   AudioPlayer player;
+  
+  int lvl = 0;
   
   private ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
   private ArrayList<Projectile> projectiles = new ArrayList();
   
   public GameState(PApplet context, Minim minim) {
     super("game", context);
-    
-    widthTerrain = width * 2;
-    heightTerrain = height * 1.3;
     player = minim.loadFile("laser.wav");
-    
-    terrain = new Terrain(new PVector(0,0,-200), (int) widthTerrain, (int) heightTerrain);
     spaceship = new Spaceship(new PVector(0, height*1.2, 0));
   }
 
@@ -34,40 +31,39 @@ public class GameState extends State {
     }
   }
   
+  void keyEvent(KeyEvent event) {
+  }
+  
   public void draw() {
-    og.compass();
-    if (random(-2, 1) > 0) {
+    
+    lvl = (int) this.getCurrentScore() / 10000;
+    
+    if (random(-40 + lvl*2, 10) > 0) {
       int x = (int) random(this.spaceship.position.x - width/2, this.spaceship.position.x + width/2);
-      int z = (int) random(this.spaceship.position.z - 500, this.spaceship.position.z + 500);
-      asteroids.add(new Asteroid(new PVector(x, -height*2, z), new PVector(random(-3, 3), random(20,50), 0), (int) random(30,80)));
+      int z = (int) random(this.spaceship.position.z - height, this.spaceship.position.z + height);
+      asteroids.add(new Asteroid(new PVector(x, -height*2-lvl * 5, z), new PVector(random(-10, 10), random(20,50) + lvl * 5, random(-10, 10)), (int) random(30,200)));
     }
     
-    spaceship.updatePosition(map(mouseX, 0, width, 0, widthTerrain), spaceship.getPosition().y, map(mouseY, 0, height, -height, height));
-    cam.lookAt(map(mouseX, 0, width, -width,width), map(mouseY, 0, height, -height / 2, height / 2), mouseY*0.7, 0);
-    /*if (leap.hasHands()) {
-      Hand h = leap.getHands().get(0);
-      positionSpaceShip.x = h.getPosition().x;
-      positionSpaceShip.z = h.getPosition().z;
-      println(mouseX);
-    } else {
-      
-    }*/
+    spaceshipDirection = new PVector(map(mouseX, 0, width, -30, 30), 0,  map(mouseY, 0, height, 30, -30));
+    spaceshipDirection.limit(10 + lvl);
+    spaceshipDirection.limit(20);
+    spaceship.updatePosition(spaceshipDirection);
+    
+    cam.lookAt(spaceship.position.x - width, -spaceship.position.z - 50, 0, 0);
     
     drawBackground(color(0, 0,0));
-    //background(230,70,10);
     
     rotateX(PI/2); //-0.3
-    //rotateX(radians(map(mouseY, 0, height, -5, 5)));
-    //rotateY(radians(map(mouseX, 0, width, -5, 5)));
     
-    translate(-width, -heightTerrain+150);
+    translate(-width, -height);
     
     lights();
-    //terrain.render();
+    spaceship.tiltY = map(mouseX, 0, width, -5, 5);
+    spaceship.tiltX = map(mouseY, 0, height, -5, 5);
     spaceship.render();
     
-    for(int i = 0; i < asteroids.size(); i++) {
-      asteroids.get(i).draw();
+    for(int i = 0; i < this.asteroids.size(); i++) {
+      this.asteroids.get(i).render();
     }
     
     for (int i = 0; i < this.projectiles.size(); i++) {
@@ -88,8 +84,11 @@ public class GameState extends State {
         };
     }
     
+    int score = (int) (millis() - startTime);
+    //println(score);
+    this.setCurrentScore(score);
     cam.beginHUD();
-      text(millis() - startTime, width - 30, 30);
+      text(this.getCurrentScore(), width - 30, 30);
     cam.endHUD();
   }
   
@@ -107,7 +106,8 @@ public class GameState extends State {
       }
       if (boxSphereCollision(a, spaceship.getShape(), spaceship.getPosition())) {
         this.asteroids.clear();
-        setCurrentState("start");
+        this.projectiles.clear();
+        this.setCurrentState("end");
       }
       
     }
