@@ -6,7 +6,7 @@ class Projectile extends Element {
   public Projectile(PVector position, PVector velocity) {
     super(position, velocity);
     this.og = new ObjectGenerator3D();
-    this.colour = color(50, 100, 100);
+    this.colour = color(15, 80, 80);
     stroke(this.colour);
     fill(this.colour);
     this.shape = createShape(BOX, 2, 100, 2);

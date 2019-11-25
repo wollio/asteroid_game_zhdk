@@ -78,7 +78,7 @@ public class Star {
     // to the "z" value of the previous frame.
     pz = z;
 
-    stroke(255);
+    stroke(color(random(275, 310), random(80, 100), random(30,40)));
     line(px, py, sx, sy);
 
   }

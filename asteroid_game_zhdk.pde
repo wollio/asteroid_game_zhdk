@@ -11,7 +11,8 @@ import de.voidplus.leapmotion.*;
 PeasyCam cam;
 LeapMotion leap;
 
-HashMap<String, State> states = new HashMap<String, State>();
+public HashMap<String, State> states = new HashMap<String, State>();
+StateSingleton stateSingleton = StateSingleton.getInstance(this);
 
 ObjectGenerator3D og;
 Minim minim;
@@ -35,9 +36,9 @@ public void setup() {
   cam.setCenterDragHandler(null);
   cam.setWheelHandler(null);
   
-  this.states.put("game", new GameState(this, minim));
-  this.states.put("start", new StartState(this));
-  this.states.put("end", new EndState(this));
+  this.stateSingleton.states.put("game", new GameState(this, minim));
+  this.stateSingleton.states.put("start", new StartState(this));
+  this.stateSingleton.states.put("end", new EndState(this));
   
   stroke(255);
   noFill();
@@ -47,12 +48,12 @@ public void setup() {
 }
 
 public void draw() {
-  this.states.get(((State) this.states.values().toArray()[0]).getCurrentState()).draw();
+  this.stateSingleton.states.get(this.stateSingleton.getState()).draw();
   
-  cam.beginHUD();
+  /*cam.beginHUD();
   fill(255);
   text(frameRate, 50, 50);
-  cam.endHUD();
+  cam.endHUD();*/
 }
 
 public void stop() {

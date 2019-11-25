@@ -17,8 +17,6 @@ public abstract class State {
     for (int i = 0; i < this.stars.length; i++) {
       this.stars[i] = new Star();
     }
-    
-    this.setup();
   }
   
   abstract public void setup();
@@ -42,7 +40,7 @@ public abstract class State {
   
   protected void setCurrentState(String state) {
     this.currentState.state = state;
-    //this.setup();
+    this.currentState.states.get(state).setup();
   }
   
   protected String getCurrentState() {

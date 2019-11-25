@@ -21,7 +21,9 @@ public class GameState extends State {
   }
 
   public void setup() {
-    this.startTime = millis();
+    if (this.isActive()) {
+      this.startTime = millis();
+    }
   }
   
   void mouseEvent(MouseEvent event) {
@@ -51,7 +53,7 @@ public class GameState extends State {
     
     cam.lookAt(spaceship.position.x - width, -spaceship.position.z - 50, 0, 0);
     
-    drawBackground(color(0, 0,0));
+    drawBackground(color(40, 100, 65));
     
     rotateX(PI/2); //-0.3
     
@@ -88,7 +90,10 @@ public class GameState extends State {
     //println(score);
     this.setCurrentScore(score);
     cam.beginHUD();
-      text(this.getCurrentScore(), width - 30, 30);
+      pushStyle();
+      textAlign(RIGHT, CENTER);
+      text(this.getCurrentScore(), width - 50, 50);
+      popStyle();
     cam.endHUD();
   }
   

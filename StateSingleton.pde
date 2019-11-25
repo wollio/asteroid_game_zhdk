@@ -2,7 +2,8 @@ static class StateSingleton {
  
   private static StateSingleton inst;
   private static PApplet p;
-  private String state = "end";
+  public HashMap<String, State> states = new HashMap<String, State>(); 
+  private String state = "start";
   private int score;
  
   private StateSingleton() {
@@ -18,6 +19,10 @@ static class StateSingleton {
   
   public void updateState(String name) {
     this.state = name;
+  }
+  
+  public String getState() {
+    return this.state;
   }
   
   public int getScore() {

@@ -1,7 +1,7 @@
 public class StartState extends State {
 
   PFont pixelFont;
-  Button b = new Button(new PVector(width/2, height/2), 200, 100, "restart");
+  Button b = new Button(new PVector(width/2, height/2), 200, 100, "start");
   AudioPlayer song;
   BeatDetect beat;
   BeatListener bl;
@@ -27,19 +27,6 @@ public class StartState extends State {
   public void draw() {
     drawBackground(c);
     cam.beginHUD();
-    //beat.detect(song.mix);
-    // draw a green rectangle for every detect band
-    // that had an onset this frame
-    float rectW = width / beat.detectSize();
-    for(int i = 0; i < beat.detectSize(); ++i)
-    {
-      // test one frequency band for an onset
-      if ( beat.isOnset(i) )
-      {
-        fill(120, 100, 100);
-        //rect( i*rectW, 0, rectW, height);
-      }
-    }
     
     // draw an orange rectangle over the bands in 
     // the range we are querying
@@ -50,28 +37,28 @@ public class StartState extends State {
     int numberOfOnsetsThreshold = 3;
     if ( beat.isRange(lowBand, highBand, numberOfOnsetsThreshold) )
     {
-      fill(30, 100, 100);
-      c = color(random(0,360), 100 ,30);
+      c = color(0, 0, random(0,10));
       //rect(rectW*lowBand, 0, (highBand-lowBand)*rectW, height);
     }
       
       textFont(this.pixelFont);
       textAlign(CENTER, CENTER);
-      text("you suck", width/2,-height/9);
+      textSize(45);
+      text("flying saucer", width/2,height/2 - 200);
+      textSize(32);
       this.b.render();
     cam.endHUD();
   }
   
   public void mouseEvent(MouseEvent event) {
     if (b.isMouseHover(new PVector(event.getX(), event.getY()))) {
-      b.bgColor = color(0, 100, 100);
       if (event.getAction() == MouseEvent.CLICK) {
         this.setCurrentState("game");
       }
-    } else {
-      b.bgColor = color(200, 100, 100);
     }
+  }
   
+  public void keyEvent(KeyEvent event) {
   }
   
   

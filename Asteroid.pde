@@ -4,7 +4,6 @@ public class Asteroid extends Element {
   private float size;
   private color strokeColor;
   private boolean isExploding;
-  private ParticleSystem particles;
   
   //from rock
   private float[][][] points;
@@ -13,15 +12,16 @@ public class Asteroid extends Element {
   private  boolean rebuild;
   private PImage skin;
   private PVector spin;
+  private color colour;
   
   public Asteroid(PVector position, PVector velocity, int size) {
     super(position, velocity);
     this.size = size;
     this.strokeColor = color(0, 100, 0);
-    this.particles = new ParticleSystem(this.position);
     this.shape = createShape(SPHERE, size);
     //this.shape.setFill(false);
     //this.sphere.setStroke(false);
+    this.colour = color(random(275, 310), random(80, 100), random(10,30));
     
     //from rock
     this.radius = size;
@@ -55,8 +55,8 @@ public class Asteroid extends Element {
     {
       float[][] pointSet = points[i];
       if(pointSet == null) continue;
+      fill(colour);
       beginShape(TRIANGLE_STRIP);
-      texture(skin);
       for(int j = 0; j < pointSet.length; j++)
       {
         float[] p = pointSet[j];
